@@ -136,14 +136,32 @@ function handleGalleryClick(event) {
     const largeImageSource = event.target.dataset.source;
     console.log('Посилання на велике зображення:', largeImageSource);
 
-      // Відкриваємо модальне вікно basicLightbox з великим зображенням
-   const instance = basicLightbox.create(`<img src="${largeImageSource}">`);
- instance.show();
+  // Відкриваємо модальне вікно basicLightbox з великим зображенням і зразу блокуємо закриття вікна - конфігурація Blocked
+    const instance = basicLightbox.create(`<img src="${largeImageSource}" />`, {
+      closable: false,
+    });
 
+
+
+  // -------------------------------------------------------------------------------
+// ---------------------ДОДАЄМО "ЗАКРИВАЄТЬСЯ НА ESCAPE"----------
+// -------------------------------------------------------------------------------
+      
+    
+    const handleEscape = (escape) => {
+      if (escape.key === 'Escape') {
+        instance.close();
+        document.removeEventListener('keydown', handleEscape);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+
+    instance.show();
+    
   }
- }
+};
 
  
-// -------------------------------------------------------------------------------
-// ---------------------ДОДАЄМО МОДАЛЬНЕ ВІКНО -"ЗАКРИВАЄТЬСЯ НА ESCAPE"----------
-// -------------------------------------------------------------------------------
+
+
